@@ -1,0 +1,56 @@
+if(rootProject.ext.android.is_application){
+    apply plugin: 'com.android.application'
+}else{
+    apply plugin: 'com.android.library'
+}
+
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        if(rootProject.ext.android.is_application){
+            applicationId "com.example.member"
+        }
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main{
+            //根据当前模式 选择加载的清单文件
+            if(rootProject.ext.android.is_application){
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                //使用如下配置可指定哪个文件夹为java编译文件夹
+                java.srcDir 'src/main/module'
+            }else{
+                manifest.srcFile 'src/main/manifest/AndroidManifest.xml'
+            }
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation rootProject.ext.dependencies.publicImplementation
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+//    implementation project(rootProject.ext.dependencies.other)
+    rootProject.ext.dependencies.other.each{
+        implementation project(it)
+    }
+
+    annotationProcessor project(path: ':annotation_compiler')
+}

@@ -1,0 +1,24 @@
+ext{
+    android = [
+            compileSdkVersion : 30,
+            buildToolsVersion : "29.0.3",
+            minSdkVersion : 21,
+            targetSdkVersion : 30,
+            versionCode :1,
+            versionName :"1.0",
+            is_application : false
+    ]
+
+    dependencies = [
+            publicImplementation : [
+                     'androidx.appcompat:appcompat:1.0.2',
+                     'androidx.constraintlayout:constraintlayout:1.1.3'
+            ],
+            other : [
+                    ':common',
+                     ':basic',
+                     ':arouter',
+                    ':annotation'
+            ]
+    ]
+}
